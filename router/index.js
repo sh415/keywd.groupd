@@ -108,7 +108,7 @@ router.post('/keywd', async(req, res) => {
 
         async function openAndProcessPage(chunk) {
             const browser = await puppeteer.launch({
-                headless: true,
+                headless: 'new',
                 args: ['--no-sandbox', '--disable-setuid-sandbox']
             });
 
