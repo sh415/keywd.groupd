@@ -24,7 +24,7 @@ const main = async () => {
     app.use("/docs", swaggerUi.serve, swaggerUi.setup(specs));
 
     server.listen(PORT, ()=> {
-        console.log(`keywd 서버가 http://localhost:${PORT} 에서 실행중입니다.`);
+        console.log(`keywd.groupd -> http://localhost:${PORT} is running...`);
     });
 }
 

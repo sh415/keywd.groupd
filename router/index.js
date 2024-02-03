@@ -62,11 +62,6 @@ router.post('/responses', async(req, res) => {
  */
 router.post('/vpn', async(req, res) => {
     try {
-        // const results = {
-        //     message: true
-        // }
-        // res.status(200).send(results);
-
         const browser = await puppeteer.launch({
             headless: false,
         });
@@ -78,11 +73,80 @@ router.post('/vpn', async(req, res) => {
                 height: 900
             });
             await page.goto(`https://ip.pe.kr/`, {
-                // waitUntil: 'domcontentloaded',
+                waitUntil: 'domcontentloaded',
                 timeout: 15000,
             });
 
             await waitForTimeout(5000);
+
+        } catch (error) {
+            console.log('/vpn -> error', error);
+
+        } finally {
+            await browser.close();
+        }
+
+        const results = {
+            message: true
+        }
+        res.status(200).send(results);
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+/**
+ * @swagger
+ * /userAgent:
+ *   post:
+ *     description: userAgent값을 확인합니다.
+ *     responses:
+ *       200:
+ *         description: 성공
+ */
+router.post('/userAgent', async(req, res) => {
+    try {
+        const browser = await puppeteer.launch({
+            headless: false,
+            args: [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-web-security', // CORS 정책 우회
+                '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
+            ]
+        });
+
+        try {
+            const page = await browser.newPage();
+            await page.setViewport({
+                width: 1600,
+                height: 900
+            });
+
+            // userAgent 설정
+            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+            await page.setExtraHTTPHeaders({
+                'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
+            });
+
+            await page.goto(`https://www.google.com/`, {
+                // waitUntil: 'domcontentloaded',
+                timeout: 15000,
+            });
+
+            // 페이지에 대한 작업을 수행하세요.
+            const userAgent = await page.evaluate(() => {
+                const ua = navigator.userAgent;
+                return ua;
+            });
+
+            await waitForTimeout(3000);
+
+            const results = {
+                message: userAgent
+            }
+            res.status(200).send(results);
 
         } catch (error) {
             console.log('/vpn -> error', error);
@@ -108,8 +172,14 @@ router.post('/keywd', async(req, res) => {
 
         async function openAndProcessPage(chunk) {
             const browser = await puppeteer.launch({
-                headless: 'new',
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
+                headless: false,
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-web-security', // CORS 정책 우회
+                    '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
+                ]
+                // headless: false,
             });
 
             try {
@@ -118,6 +188,13 @@ router.post('/keywd', async(req, res) => {
                     width: 1366,
                     height: 768
                 });
+                
+                // userAgent 설정
+                await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+                await page.setExtraHTTPHeaders({
+                    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
+                });
+
                 // 필요한 리소스 타입만 로드하도록 요청을 필터링
                 await page.setRequestInterception(true);
                 page.on('request', request => {
