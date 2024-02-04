@@ -185,8 +185,8 @@ router.post('/keywd', async(req, res) => {
             try {
                 const page = await browser.newPage();
                 await page.setViewport({
-                    width: 1366,
-                    height: 768
+                    width: 600,
+                    height: 400
                 });
                 
                 // userAgent 설정
