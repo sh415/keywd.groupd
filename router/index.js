@@ -69,8 +69,8 @@ router.post('/vpn', async(req, res) => {
         try {
             const page = await browser.newPage();
             await page.setViewport({
-                width: 1600,
-                height: 900
+                width: 1920,
+                height: 1080
             });
             await page.goto(`https://ip.pe.kr/`, {
                 waitUntil: 'domcontentloaded',
@@ -120,8 +120,8 @@ router.post('/userAgent', async(req, res) => {
         try {
             const page = await browser.newPage();
             await page.setViewport({
-                width: 1600,
-                height: 900
+                width: 1920,
+                height: 1080
             });
 
             // userAgent 설정
@@ -172,7 +172,7 @@ router.post('/keywd', async(req, res) => {
 
         async function openAndProcessPage(chunk) {
             const browser = await puppeteer.launch({
-                headless: false,
+                headless: 'new',
                 args: [
                     '--no-sandbox',
                     '--disable-setuid-sandbox',
@@ -185,8 +185,8 @@ router.post('/keywd', async(req, res) => {
             try {
                 const page = await browser.newPage();
                 await page.setViewport({
-                    width: 600,
-                    height: 400
+                    width: 1920,
+                    height: 1080
                 });
                 
                 // userAgent 설정
