@@ -248,6 +248,9 @@ router.post('/keywd', async(req, res) => {
                     console.log('openAndProcessPage() -> 붙여쓰기 오류', error);
                 }
 
+                // 페이지를 명시적으로 닫아준다.
+                await page.close();
+
                 // console.log('openAndProcessPage() -> titles', links);
                 return { links: links, cell: chunk }; // 링크 배열을 반환합니다.
 

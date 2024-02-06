@@ -10,7 +10,8 @@ module.exports = {
             marge_logs: true,
             autorestart: false,
             watch: false,
-            // max_memory_restart: '1024',
+            max_memory_restart: '4096M',
+            node_args: '--max-old-space-size=4096',
             env: {
                 NODE_ENV: 'production',
                 PORT: 5055,
