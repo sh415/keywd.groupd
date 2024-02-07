@@ -182,8 +182,10 @@ router.post('/keywd', async(req, res) => {
                 // headless: false,
             });
 
+            let page = null; // page 변수를 try 블록 외부에서 선언
+
             try {
-                const page = await browser.newPage();
+                page = await browser.newPage();
                 await page.setViewport({
                     width: 1920,
                     height: 1080
@@ -248,9 +250,6 @@ router.post('/keywd', async(req, res) => {
                     console.log('openAndProcessPage() -> 붙여쓰기 오류', error);
                 }
 
-                // 페이지를 명시적으로 닫아준다.
-                await page.close();
-
                 // console.log('openAndProcessPage() -> titles', links);
                 return { links: links, cell: chunk }; // 링크 배열을 반환합니다.
 
@@ -259,6 +258,7 @@ router.post('/keywd', async(req, res) => {
                 return { links: [], cell: chunk }; // error, 빈 배열 반환
 
             } finally {
+                if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                 await browser.close();
             }
         }
