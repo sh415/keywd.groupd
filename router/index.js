@@ -179,10 +179,10 @@ router.post('/keywd', async(req, res) => {
                     '--disable-web-security', // CORS 정책 우회
                     '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
                 ]
-                // headless: false,
             });
 
             let page = null; // page 변수를 try 블록 외부에서 선언
+            let links = [];
 
             try {
                 page = await browser.newPage();
@@ -210,14 +210,12 @@ router.post('/keywd', async(req, res) => {
 
                 const column = chunk.column;
                 const row = chunk.row;
-                let links = [];
 
                 try { // 띄어쓰기
                     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}+${column}`, {
                         waitUntil: 'domcontentloaded',
                         timeout: 15000,
                     });
-                
                     await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
@@ -236,7 +234,6 @@ router.post('/keywd', async(req, res) => {
                         waitUntil: 'domcontentloaded',
                         timeout: 15000,
                     });
-                
                     await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
@@ -250,16 +247,25 @@ router.post('/keywd', async(req, res) => {
                     console.log('openAndProcessPage() -> 붙여쓰기 오류', error);
                 }
 
-                // console.log('openAndProcessPage() -> titles', links);
-                return { links: links, cell: chunk }; // 링크 배열을 반환합니다.
-
             } catch (error) {
                 console.log('openAndProcessPage() -> error', error);
-                return { links: [], cell: chunk }; // error, 빈 배열 반환
+                try {
+                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
+                    await browser.close();
+                } catch (error) {
+                    console.log(error);
+                }
 
             } finally {
-                if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
-                await browser.close();
+                try {
+                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
+                    await browser.close();
+
+                    return { links: links, cell: chunk }; // error, 빈 배열 반환
+
+                } catch (error) {
+                    console.log(error);
+                }
             }
         }
 
