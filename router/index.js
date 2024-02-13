@@ -343,6 +343,280 @@ router.post('/keywd', async(req, res) => {
     }
 });
 
+router.post('/keywd/space', async(req, res) => {
+    try {
+        const chunk = req.body.chunk;
+        // const BATCH = 5;
+
+        async function openAndProcessPage(chunk) {
+            const browser = await puppeteer.launch({
+                headless: 'new',
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-web-security', // CORS 정책 우회
+                    '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
+                ]
+            });
+
+            let page = null; // page 변수를 try 블록 외부에서 선언
+            let links = [];
+
+            try {
+                page = await browser.newPage();
+                await page.setViewport({
+                    width: 1920,
+                    height: 1080
+                });
+                
+                // userAgent 설정
+                await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+                await page.setExtraHTTPHeaders({
+                    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
+                });
+
+                // 필요한 리소스 타입만 로드하도록 요청을 필터링
+                await page.setRequestInterception(true);
+                page.on('request', request => {
+                    const resourceType = request.resourceType();
+                    if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
+                        request.continue();
+                    } else {
+                        request.abort();
+                    }
+                });
+
+                const column = chunk.column;
+                const row = chunk.row;
+
+                try { // 띄어쓰기
+                    await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}+${column}`, {
+                        waitUntil: 'domcontentloaded',
+                        timeout: 15000,
+                    });
+                    await waitForTimeout(3000);
+
+                    // 페이지에 대한 작업을 수행하세요.
+                    const links1 = await page.evaluate(() => {
+                        const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                        return Array.from(elements).map(el => el.href);
+                    });
+                    links = [...links, ...links1];
+
+                } catch (error) {
+                    console.log('openAndProcessPage() -> 띄어쓰기 오류', error);
+                }
+
+                // try { // 붙여쓰기
+                //     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}${column}`, {
+                //         waitUntil: 'domcontentloaded',
+                //         timeout: 15000,
+                //     });
+                //     await waitForTimeout(3000);
+
+                //     // 페이지에 대한 작업을 수행하세요.
+                //     const links2 = await page.evaluate(() => {
+                //         const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                //         return Array.from(elements).map(el => el.href);
+                //     });
+                //     links = [...links, ...links2];
+
+                // } catch (error) {
+                //     console.log('openAndProcessPage() -> 붙여쓰기 오류', error);
+                // }
+
+            } catch (error) {
+                console.log('openAndProcessPage() -> error', error);
+                try {
+                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
+                    await browser.close();
+                } catch (error) {
+                    console.log(error);
+                }
+
+            } finally {
+                try {
+                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
+                    await browser.close();
+
+                    return { links: links, cell: chunk }; // error, 빈 배열 반환
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
+
+        // 각 청크에 대해 openAndProcessPage 함수를 실행하고, 결과를 배열로 반환
+        const promises = chunk.map(openAndProcessPage);
+
+        // 모든 프로미스가 완료될 때까지 기다림
+        const processedResults = await Promise.all(promises);
+        // console.log("All pages visited and processed.", processedResults);
+
+        // async function main() {
+        //     const processedResults = await go(
+        //         chunk,
+        //         L.map(openAndProcessPage),
+        //         C.takeAll(BATCH)
+        //     );
+          
+        //     // 모든 작업이 완료된 후에 여기에서 결과를 처리할 수 있습니다.
+        //     console.log("All pages visited and processed.", processedResults);
+        // }
+        
+        // main();
+
+        res.status(200).send(processedResults);
+
+        /** 서버 재시작 코드 
+         * execPromise를 사용하여 npm restart 명령 실행
+        */
+        const stdout = await execPromise('npm restart');
+        console.log(`stdout: ${stdout}`);
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
+router.post('/keywd/paste', async(req, res) => {
+    try {
+        const chunk = req.body.chunk;
+        // const BATCH = 5;
+
+        async function openAndProcessPage(chunk) {
+            const browser = await puppeteer.launch({
+                headless: 'new',
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-web-security', // CORS 정책 우회
+                    '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
+                ]
+            });
+
+            let page = null; // page 변수를 try 블록 외부에서 선언
+            let links = [];
+
+            try {
+                page = await browser.newPage();
+                await page.setViewport({
+                    width: 1920,
+                    height: 1080
+                });
+                
+                // userAgent 설정
+                await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+                await page.setExtraHTTPHeaders({
+                    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
+                });
+
+                // 필요한 리소스 타입만 로드하도록 요청을 필터링
+                await page.setRequestInterception(true);
+                page.on('request', request => {
+                    const resourceType = request.resourceType();
+                    if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
+                        request.continue();
+                    } else {
+                        request.abort();
+                    }
+                });
+
+                const column = chunk.column;
+                const row = chunk.row;
+
+                // try { // 띄어쓰기
+                //     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}+${column}`, {
+                //         waitUntil: 'domcontentloaded',
+                //         timeout: 15000,
+                //     });
+                //     await waitForTimeout(3000);
+
+                //     // 페이지에 대한 작업을 수행하세요.
+                //     const links1 = await page.evaluate(() => {
+                //         const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                //         return Array.from(elements).map(el => el.href);
+                //     });
+                //     links = [...links, ...links1];
+
+                // } catch (error) {
+                //     console.log('openAndProcessPage() -> 띄어쓰기 오류', error);
+                // }
+
+                try { // 붙여쓰기
+                    await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}${column}`, {
+                        waitUntil: 'domcontentloaded',
+                        timeout: 15000,
+                    });
+                    await waitForTimeout(3000);
+
+                    // 페이지에 대한 작업을 수행하세요.
+                    const links2 = await page.evaluate(() => {
+                        const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                        return Array.from(elements).map(el => el.href);
+                    });
+                    links = [...links, ...links2];
+
+                } catch (error) {
+                    console.log('openAndProcessPage() -> 붙여쓰기 오류', error);
+                }
+
+            } catch (error) {
+                console.log('openAndProcessPage() -> error', error);
+                try {
+                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
+                    await browser.close();
+                } catch (error) {
+                    console.log(error);
+                }
+
+            } finally {
+                try {
+                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
+                    await browser.close();
+
+                    return { links: links, cell: chunk }; // error, 빈 배열 반환
+
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+        }
+
+        // 각 청크에 대해 openAndProcessPage 함수를 실행하고, 결과를 배열로 반환
+        const promises = chunk.map(openAndProcessPage);
+
+        // 모든 프로미스가 완료될 때까지 기다림
+        const processedResults = await Promise.all(promises);
+        // console.log("All pages visited and processed.", processedResults);
+
+        // async function main() {
+        //     const processedResults = await go(
+        //         chunk,
+        //         L.map(openAndProcessPage),
+        //         C.takeAll(BATCH)
+        //     );
+          
+        //     // 모든 작업이 완료된 후에 여기에서 결과를 처리할 수 있습니다.
+        //     console.log("All pages visited and processed.", processedResults);
+        // }
+        
+        // main();
+
+        res.status(200).send(processedResults);
+
+        /** 서버 재시작 코드 
+         * execPromise를 사용하여 npm restart 명령 실행
+        */
+        const stdout = await execPromise('npm restart');
+        console.log(`stdout: ${stdout}`);
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 function waitForTimeout(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
