@@ -1,6 +1,7 @@
 
 /** express */
 const express = require('express');
+const { exec } = require('child_process');
 const router = express.Router();
 
 /** modules */
@@ -165,6 +166,46 @@ router.post('/userAgent', async(req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /restart:
+ *   post:
+ *     description: 재시작
+ *     responses:
+ *       200:
+ *         description: 성공
+ */
+
+// exec를 Promise로 감싸는 함수
+function execPromise(command) {
+    return new Promise((resolve, reject) => {
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                reject(`exec error: ${error}`);
+                return;
+            }
+            if (stderr) {
+                console.error(`stderr: ${stderr}`);
+            }
+            resolve(stdout);
+        });
+    });
+}
+
+router.post('/restart', async(req, res) => {
+    try {
+        // execPromise를 사용하여 npm restart 명령 실행
+        const stdout = await execPromise('npm restart');
+        console.log(`stdout: ${stdout}`);
+
+        // exec의 작업이 성공적으로 완료된 후에 응답 보내기
+        res.status(200).send(true);
+
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 router.post('/keywd', async(req, res) => {
     try {
         const chunk = req.body.chunk;
@@ -290,6 +331,12 @@ router.post('/keywd', async(req, res) => {
         // main();
 
         res.status(200).send(processedResults);
+
+        /** 서버 재시작 코드 
+         * execPromise를 사용하여 npm restart 명령 실행
+        */
+        const stdout = await execPromise('npm restart');
+        console.log(`stdout: ${stdout}`);
 
     } catch (error) {
         console.error(error);
