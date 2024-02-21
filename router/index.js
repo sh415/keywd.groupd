@@ -371,9 +371,9 @@ router.post('/keywd/space', async(req, res) => {
                 
                 // userAgent 설정
                 await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
-                await page.setExtraHTTPHeaders({
-                    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
-                });
+                // await page.setExtraHTTPHeaders({
+                //     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
+                // });
 
                 // 필요한 리소스 타입만 로드하도록 요청을 필터링
                 await page.setRequestInterception(true);
@@ -508,9 +508,9 @@ router.post('/keywd/paste', async(req, res) => {
                 
                 // userAgent 설정
                 await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
-                await page.setExtraHTTPHeaders({
-                    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
-                });
+                // await page.setExtraHTTPHeaders({
+                //     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
+                // });
 
                 // 필요한 리소스 타입만 로드하도록 요청을 필터링
                 await page.setRequestInterception(true);
