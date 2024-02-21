@@ -290,19 +290,12 @@ router.post('/keywd', async(req, res) => {
 
             } catch (error) {
                 console.log('openAndProcessPage() -> error', error);
-                try {
-                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
-                    await browser.close();
-                } catch (error) {
-                    console.log(error);
-                }
 
             } finally {
                 try {
                     if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                     await browser.close();
-
-                    return { links: links, cell: chunk }; // error, 빈 배열 반환
+                    return { links: links, cell: chunk };
 
                 } catch (error) {
                     console.log(error);
@@ -433,18 +426,11 @@ router.post('/keywd/space', async(req, res) => {
 
             } catch (error) {
                 console.log('openAndProcessPage() -> error', error);
-                try {
-                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
-                    await browser.close();
-                } catch (error) {
-                    console.log(error);
-                }
 
             } finally {
                 try {
                     if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                     await browser.close();
-
                     return { links: links, cell: chunk }; // error, 빈 배열 반환
 
                 } catch (error) {
@@ -570,18 +556,11 @@ router.post('/keywd/paste', async(req, res) => {
 
             } catch (error) {
                 console.log('openAndProcessPage() -> error', error);
-                try {
-                    if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
-                    await browser.close();
-                } catch (error) {
-                    console.log(error);
-                }
 
             } finally {
                 try {
                     if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                     await browser.close();
-
                     return { links: links, cell: chunk }; // error, 빈 배열 반환
 
                 } catch (error) {
