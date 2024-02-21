@@ -313,9 +313,15 @@ router.post('/keywd', async(req, res) => {
         // 각 청크에 대해 openAndProcessPage 함수를 실행하고, 결과를 배열로 반환
         const promises = chunk.map(openAndProcessPage);
 
+        // 모든 프로미스에 대해 타임아웃을 적용
+        const promisesWithTimeout = promises.map(promise => Promise.race([
+            promise,
+            timeoutPromise(30000) // 30초 타임아웃
+        ]));
+
         // 모든 프로미스가 완료될 때까지 기다림
-        const processedResults = await Promise.all(promises);
-        // console.log("All pages visited and processed.", processedResults);
+        // const processedResults = await Promise.all(promises);
+        const processedResults = await Promise.all(promisesWithTimeout);
 
         // async function main() {
         //     const processedResults = await go(
@@ -616,6 +622,15 @@ router.post('/keywd/paste', async(req, res) => {
         console.error(error);
     }
 });
+
+// 타임아웃 프로미스를 생성하는 함수
+function timeoutPromise(ms) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve('timeoutPromise() -> 타임아웃 발생, 30000ms'); // 타임아웃 발생 시 'timeout' 문자열 반환
+        }, ms);
+    });
+}
 
 function waitForTimeout(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
