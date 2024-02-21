@@ -8,7 +8,7 @@ module.exports = {
             instances: 1,
             exec_mode: 'cluster',
             marge_logs: true,
-            autorestart: false,
+            autorestart: true,
             watch: false,
             max_memory_restart: '4096M',
             node_args: '--max-old-space-size=4096',
