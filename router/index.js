@@ -270,6 +270,13 @@ router.post('/keywd', async(req, res) => {
                     console.log('openAndProcessPage() -> 띄어쓰기 오류', error);
                 }
 
+                // 안정성을 위한 대기시간
+                const delay = 10;
+                for (let i = 0; i < delay; i++) {
+                    console.log('openAndProcessPage -> waitForTimeout() for safety', (delay-i));
+                    await waitForTimeout(1000);
+                }
+
                 try { // 붙여쓰기
                     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}${column}`, {
                         waitUntil: 'domcontentloaded',
@@ -406,23 +413,12 @@ router.post('/keywd/space', async(req, res) => {
                     console.log('openAndProcessPage() -> 띄어쓰기 오류', error);
                 }
 
-                // try { // 붙여쓰기
-                //     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}${column}`, {
-                //         waitUntil: 'domcontentloaded',
-                //         timeout: 15000,
-                //     });
-                //     await waitForTimeout(3000);
-
-                //     // 페이지에 대한 작업을 수행하세요.
-                //     const links2 = await page.evaluate(() => {
-                //         const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
-                //         return Array.from(elements).map(el => el.href);
-                //     });
-                //     links = [...links, ...links2];
-
-                // } catch (error) {
-                //     console.log('openAndProcessPage() -> 붙여쓰기 오류', error);
-                // }
+                // 안정성을 위한 대기시간
+                const delay = 10;
+                for (let i = 0; i < delay; i++) {
+                    console.log('openAndProcessPage -> waitForTimeout() for safety', (delay-i));
+                    await waitForTimeout(1000);
+                }
 
             } catch (error) {
                 console.log('openAndProcessPage() -> error', error);
@@ -523,24 +519,6 @@ router.post('/keywd/paste', async(req, res) => {
                 const column = chunk.column;
                 const row = chunk.row;
 
-                // try { // 띄어쓰기
-                //     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}+${column}`, {
-                //         waitUntil: 'domcontentloaded',
-                //         timeout: 15000,
-                //     });
-                //     await waitForTimeout(3000);
-
-                //     // 페이지에 대한 작업을 수행하세요.
-                //     const links1 = await page.evaluate(() => {
-                //         const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
-                //         return Array.from(elements).map(el => el.href);
-                //     });
-                //     links = [...links, ...links1];
-
-                // } catch (error) {
-                //     console.log('openAndProcessPage() -> 띄어쓰기 오류', error);
-                // }
-
                 try { // 붙여쓰기
                     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}${column}`, {
                         waitUntil: 'domcontentloaded',
@@ -557,6 +535,13 @@ router.post('/keywd/paste', async(req, res) => {
 
                 } catch (error) {
                     console.log('openAndProcessPage() -> 붙여쓰기 오류', error);
+                }
+
+                // 안정성을 위한 대기시간
+                const delay = 10;
+                for (let i = 0; i < delay; i++) {
+                    console.log('openAndProcessPage -> waitForTimeout() for safety', (delay-i));
+                    await waitForTimeout(1000);
                 }
 
             } catch (error) {
