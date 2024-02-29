@@ -13,6 +13,10 @@ const puppeteer = require("puppeteer");
 
 /** .env */ 
 require('dotenv').config();
+const MIN_PAGE_LOADTIME = parseInt(process.env.MIN_PAGE_LOADTIME, 10);
+const MAX_PAGE_LOADTIME = parseInt(process.env.MAX_PAGE_LOADTIME, 10);
+const MIN_AWAIT_FOR_SAFETY = parseInt(process.env.MIN_AWAIT_FOR_SAFETY, 10);
+const MAX_AWAIT_FOR_SAFETY = parseInt(process.env.MAX_AWAIT_FOR_SAFETY, 10);
 
 /**
  * @swagger
@@ -257,7 +261,10 @@ router.post('/keywd', async(req, res) => {
                         waitUntil: 'domcontentloaded',
                         timeout: 15000,
                     });
-                    await waitForTimeout(3000);
+                    const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
+                    console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
+                    await waitForTimeout(wait);
+                    // await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
                     const links1 = await page.evaluate(() => {
@@ -271,18 +278,20 @@ router.post('/keywd', async(req, res) => {
                 }
 
                 // 안정성을 위한 대기시간
-                const delay = 10;
-                for (let i = 0; i < delay; i++) {
-                    console.log('openAndProcessPage -> waitForTimeout() for safety', (delay-i));
-                    await waitForTimeout(1000);
-                }
+                const wait = waitForSafety(MIN_AWAIT_FOR_SAFETY, MAX_AWAIT_FOR_SAFETY);
+                console.log('openAndProcessPage() -> waitForSafety(MIN_AWAIT_FOR_SAFETY, MAX_AWAIT_FOR_SAFETY) -> wait', wait);
+                await waitForTimeout(wait);
+                // await waitForTimeout(10000);
 
                 try { // 붙여쓰기
                     await page.goto(`https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${row}${column}`, {
                         waitUntil: 'domcontentloaded',
                         timeout: 15000,
                     });
-                    await waitForTimeout(3000);
+                    const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
+                    console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
+                    await waitForTimeout(wait);
+                    // await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
                     const links2 = await page.evaluate(() => {
@@ -316,7 +325,7 @@ router.post('/keywd', async(req, res) => {
         // 모든 프로미스에 대해 타임아웃을 적용
         const promisesWithTimeout = promises.map(promise => Promise.race([
             promise,
-            timeoutPromise(30000) // 30초 타임아웃
+            timeoutPromise(60000) // 60초 타임아웃
         ]));
 
         // 모든 프로미스가 완료될 때까지 기다림
@@ -400,7 +409,10 @@ router.post('/keywd/space', async(req, res) => {
                         waitUntil: 'domcontentloaded',
                         timeout: 15000,
                     });
-                    await waitForTimeout(3000);
+                    const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
+                    console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
+                    await waitForTimeout(wait);
+                    // await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
                     const links1 = await page.evaluate(() => {
@@ -414,11 +426,10 @@ router.post('/keywd/space', async(req, res) => {
                 }
 
                 // 안정성을 위한 대기시간
-                const delay = 10;
-                for (let i = 0; i < delay; i++) {
-                    console.log('openAndProcessPage -> waitForTimeout() for safety', (delay-i));
-                    await waitForTimeout(1000);
-                }
+                const wait = waitForSafety(MIN_AWAIT_FOR_SAFETY, MAX_AWAIT_FOR_SAFETY);
+                console.log('openAndProcessPage() -> waitForSafety(MIN_AWAIT_FOR_SAFETY, MAX_AWAIT_FOR_SAFETY) -> wait', wait);
+                await waitForTimeout(wait);
+                // await waitForTimeout(10000);
 
             } catch (error) {
                 console.log('openAndProcessPage() -> error', error);
@@ -441,7 +452,7 @@ router.post('/keywd/space', async(req, res) => {
         // 모든 프로미스에 대해 타임아웃을 적용
         const promisesWithTimeout = promises.map(promise => Promise.race([
             promise,
-            timeoutPromise(30000) // 30초 타임아웃
+            timeoutPromise(60000) // 60초 타임아웃
         ]));
 
         // 모든 프로미스가 완료될 때까지 기다림
@@ -524,6 +535,9 @@ router.post('/keywd/paste', async(req, res) => {
                         waitUntil: 'domcontentloaded',
                         timeout: 15000,
                     });
+                    // const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
+                    // console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
+                    // await waitForTimeout(wait);
                     await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
@@ -538,11 +552,10 @@ router.post('/keywd/paste', async(req, res) => {
                 }
 
                 // 안정성을 위한 대기시간
-                const delay = 10;
-                for (let i = 0; i < delay; i++) {
-                    console.log('openAndProcessPage -> waitForTimeout() for safety', (delay-i));
-                    await waitForTimeout(1000);
-                }
+                const wait = waitForSafety(MIN_AWAIT_FOR_SAFETY, MAX_AWAIT_FOR_SAFETY);
+                console.log('openAndProcessPage() -> waitForSafety(MIN_AWAIT_FOR_SAFETY, MAX_AWAIT_FOR_SAFETY) -> wait', wait);
+                await waitForTimeout(wait);
+                // await waitForTimeout(10000);
 
             } catch (error) {
                 console.log('openAndProcessPage() -> error', error);
@@ -565,7 +578,7 @@ router.post('/keywd/paste', async(req, res) => {
         // 모든 프로미스에 대해 타임아웃을 적용
         const promisesWithTimeout = promises.map(promise => Promise.race([
             promise,
-            timeoutPromise(30000) // 30초 타임아웃
+            timeoutPromise(60000) // 60초 타임아웃
         ]));
 
         // 모든 프로미스가 완료될 때까지 기다림
@@ -597,14 +610,19 @@ router.post('/keywd/paste', async(req, res) => {
     }
 });
 
-// 타임아웃 프로미스를 생성하는 함수
+/** 타임아웃 프로미스를 생성하는 함수 */
 function timeoutPromise(ms) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve('timeoutPromise() -> 타임아웃 발생, 30000ms'); // 타임아웃 발생 시 'timeout' 문자열 반환
+            resolve('timeoutPromise() -> 타임아웃 발생, 60000ms'); // 타임아웃 발생 시 'timeout' 문자열 반환
         }, ms);
     });
 }
+
+/** 대기시간을 설정하는 함수 */
+const waitForSafety = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+} 
 
 function waitForTimeout(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
