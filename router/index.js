@@ -217,13 +217,13 @@ router.post('/keywd', async(req, res) => {
 
         async function openAndProcessPage(chunk) {
             const browser = await puppeteer.launch({
-                headless: 'new',
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    '--disable-web-security', // CORS 정책 우회
-                    '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
-                ]
+                headless: false, // 'new',
+                // args: [
+                //     '--no-sandbox',
+                //     '--disable-setuid-sandbox',
+                //     '--disable-web-security', // CORS 정책 우회
+                //     '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
+                // ]
             });
 
             let page = null; // page 변수를 try 블록 외부에서 선언
@@ -231,27 +231,27 @@ router.post('/keywd', async(req, res) => {
 
             try {
                 page = await browser.newPage();
-                await page.setViewport({
-                    width: 1920,
-                    height: 1080
-                });
+                // await page.setViewport({
+                //     width: 1920,
+                //     height: 1080
+                // });
                 
-                // userAgent 설정
-                await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+                // // userAgent 설정
+                // await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
                 // await page.setExtraHTTPHeaders({
                 //     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
                 // });
 
-                // 필요한 리소스 타입만 로드하도록 요청을 필터링
-                await page.setRequestInterception(true);
-                page.on('request', request => {
-                    const resourceType = request.resourceType();
-                    if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
-                        request.continue();
-                    } else {
-                        request.abort();
-                    }
-                });
+                // // 필요한 리소스 타입만 로드하도록 요청을 필터링
+                // await page.setRequestInterception(true);
+                // page.on('request', request => {
+                //     const resourceType = request.resourceType();
+                //     if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
+                //         request.continue();
+                //     } else {
+                //         request.abort();
+                //     }
+                // });
 
                 const column = chunk.column;
                 const row = chunk.row;
@@ -365,13 +365,13 @@ router.post('/keywd/space', async(req, res) => {
 
         async function openAndProcessPage(chunk) {
             const browser = await puppeteer.launch({
-                headless: 'new',
-                args: [
-                    '--no-sandbox',
-                    '--disable-setuid-sandbox',
-                    '--disable-web-security', // CORS 정책 우회
-                    '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
-                ]
+                headless: false, // 'new',
+                // args: [
+                //     '--no-sandbox',
+                //     '--disable-setuid-sandbox',
+                //     '--disable-web-security', // CORS 정책 우회
+                //     '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
+                // ]
             });
 
             let page = null; // page 변수를 try 블록 외부에서 선언
@@ -379,27 +379,27 @@ router.post('/keywd/space', async(req, res) => {
 
             try {
                 page = await browser.newPage();
-                await page.setViewport({
-                    width: 1920,
-                    height: 1080
-                });
+                // await page.setViewport({
+                //     width: 1920,
+                //     height: 1080
+                // });
                 
-                // userAgent 설정
-                await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+                // // userAgent 설정
+                // await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
                 // await page.setExtraHTTPHeaders({
                 //     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
                 // });
 
-                // 필요한 리소스 타입만 로드하도록 요청을 필터링
-                await page.setRequestInterception(true);
-                page.on('request', request => {
-                    const resourceType = request.resourceType();
-                    if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
-                        request.continue();
-                    } else {
-                        request.abort();
-                    }
-                });
+                // // 필요한 리소스 타입만 로드하도록 요청을 필터링
+                // await page.setRequestInterception(true);
+                // page.on('request', request => {
+                //     const resourceType = request.resourceType();
+                //     if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
+                //         request.continue();
+                //     } else {
+                //         request.abort();
+                //     }
+                // });
 
                 const column = chunk.column;
                 const row = chunk.row;
@@ -491,7 +491,8 @@ router.post('/keywd/paste', async(req, res) => {
 
         async function openAndProcessPage(chunk) {
             const browser = await puppeteer.launch({
-                headless: 'new',
+                headless: false,
+                // headless: 'new',
                 args: [
                     '--no-sandbox',
                     '--disable-setuid-sandbox',
@@ -505,27 +506,27 @@ router.post('/keywd/paste', async(req, res) => {
 
             try {
                 page = await browser.newPage();
-                await page.setViewport({
-                    width: 1920,
-                    height: 1080
-                });
+                // await page.setViewport({
+                //     width: 1920,
+                //     height: 1080
+                // });
                 
-                // userAgent 설정
-                await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
+                // // userAgent 설정
+                // await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
                 // await page.setExtraHTTPHeaders({
                 //     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
                 // });
 
-                // 필요한 리소스 타입만 로드하도록 요청을 필터링
-                await page.setRequestInterception(true);
-                page.on('request', request => {
-                    const resourceType = request.resourceType();
-                    if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
-                        request.continue();
-                    } else {
-                        request.abort();
-                    }
-                });
+                // // 필요한 리소스 타입만 로드하도록 요청을 필터링
+                // await page.setRequestInterception(true);
+                // page.on('request', request => {
+                //     const resourceType = request.resourceType();
+                //     if (['document', 'script', 'xhr', 'fetch'].includes(resourceType)) {
+                //         request.continue();
+                //     } else {
+                //         request.abort();
+                //     }
+                // });
 
                 const column = chunk.column;
                 const row = chunk.row;
