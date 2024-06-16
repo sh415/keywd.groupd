@@ -268,8 +268,23 @@ router.post('/keywd', async(req, res) => {
 
                     // 페이지에 대한 작업을 수행하세요.
                     const links1 = await page.evaluate(() => {
-                        const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
-                        return Array.from(elements).map(el => el.href);
+                        // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                        //return Array.from(elements).map(el => el.href);
+
+                        let totalSource = document.querySelectorAll('.total_source');
+                        let titleArea = document.querySelectorAll('.title_area');
+
+                        // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        const ts = Array.from(totalSource).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+                        const ta = Array.from(titleArea).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+
+                        return [...ts, ...ta];
                     });
                     links = [...links, ...links1];
 
@@ -295,8 +310,23 @@ router.post('/keywd', async(req, res) => {
 
                     // 페이지에 대한 작업을 수행하세요.
                     const links2 = await page.evaluate(() => {
-                        const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
-                        return Array.from(elements).map(el => el.href);
+                        // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                        // return Array.from(elements).map(el => el.href);
+
+                        let totalSource = document.querySelectorAll('.total_source');
+                        let titleArea = document.querySelectorAll('.title_area');
+
+                        // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        const ts = Array.from(totalSource).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+                        const ta = Array.from(titleArea).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+
+                        return [...ts, ...ta];
                     });
                     links = [...links, ...links2];
 
@@ -416,8 +446,23 @@ router.post('/keywd/space', async(req, res) => {
 
                     // 페이지에 대한 작업을 수행하세요.
                     const links1 = await page.evaluate(() => {
-                        const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
-                        return Array.from(elements).map(el => el.href);
+                        // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                        // return Array.from(elements).map(el => el.href);
+
+                        let totalSource = document.querySelectorAll('.total_source');
+                        let titleArea = document.querySelectorAll('.title_area');
+
+                        // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        const ts = Array.from(totalSource).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+                        const ta = Array.from(titleArea).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+
+                        return [...ts, ...ta];
                     });
                     links = [...links, ...links1];
 
@@ -543,8 +588,23 @@ router.post('/keywd/paste', async(req, res) => {
 
                     // 페이지에 대한 작업을 수행하세요.
                     const links2 = await page.evaluate(() => {
-                        const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
-                        return Array.from(elements).map(el => el.href);
+                        // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
+                        // return Array.from(elements).map(el => el.href);
+
+                        let totalSource = document.querySelectorAll('.total_source');
+                        let titleArea = document.querySelectorAll('.title_area');
+
+                        // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        const ts = Array.from(totalSource).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+                        const ta = Array.from(titleArea).map(e => {
+                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        });
+
+                        return [...ts, ...ta];
                     });
                     links = [...links, ...links2];
 
