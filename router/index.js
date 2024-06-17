@@ -271,20 +271,20 @@ router.post('/keywd', async(req, res) => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         //return Array.from(elements).map(el => el.href);
 
-                        let totalSource = document.querySelectorAll('.total_source');
+                        let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
                         // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const ts = Array.from(totalSource).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        const tt = Array.from(totalTit).map(e => {
+                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
                         const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
 
-                        return [...ts, ...ta];
+                        return [...tt, ...ta];
                     });
                     links = [...links, ...links1];
 
@@ -313,20 +313,20 @@ router.post('/keywd', async(req, res) => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         // return Array.from(elements).map(el => el.href);
 
-                        let totalSource = document.querySelectorAll('.total_source');
+                        let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
                         // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const ts = Array.from(totalSource).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        const tt = Array.from(totalTit).map(e => {
+                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
                         const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
 
-                        return [...ts, ...ta];
+                        return [...tt, ...ta];
                     });
                     links = [...links, ...links2];
 
@@ -449,20 +449,20 @@ router.post('/keywd/space', async(req, res) => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         // return Array.from(elements).map(el => el.href);
 
-                        let totalSource = document.querySelectorAll('.total_source');
+                        let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
                         // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const ts = Array.from(totalSource).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        const tt = Array.from(totalTit).map(e => {
+                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
                         const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
 
-                        return [...ts, ...ta];
+                        return [...tt, ...ta];
                     });
                     links = [...links, ...links1];
 
@@ -591,20 +591,20 @@ router.post('/keywd/paste', async(req, res) => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         // return Array.from(elements).map(el => el.href);
 
-                        let totalSource = document.querySelectorAll('.total_source');
+                        let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
                         // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const ts = Array.from(totalSource).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .total_source의 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                        const tt = Array.from(totalTit).map(e => {
+                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
                         const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('a'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 cru 속성 값을 반환하고, 없으면 공백 반환
+                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
                         });
 
-                        return [...ts, ...ta];
+                        return [...tt, ...ta];
                     });
                     links = [...links, ...links2];
 
