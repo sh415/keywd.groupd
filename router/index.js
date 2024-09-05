@@ -274,17 +274,39 @@ router.post('/keywd', async(req, res) => {
                         let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
-                        // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const tt = Array.from(totalTit).map(e => {
-                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
-                        });
-                        const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        // const tt = Array.from(totalTit).map(e => {
+                        //     const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+                        // const ta = Array.from(titleArea).map(e => {
+                        //     const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+
+                        // return [...tt, ...ta];
+
+                        // 1. 두 NodeList를 하나의 배열로 결합
+                        const allElements = [...totalTit, ...titleArea];
+
+                        // 2. 이 배열을 DOM 상에서의 순서대로 정렬
+                        const sortElements = [...allElements].sort((a, b) => {
+                            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
                         });
 
-                        return [...tt, ...ta];
+                        // 3. 링크 추출
+                        const extractionLinks = Array.from(sortElements).map(e => {
+                            let titleLink = '';
+                            titleLink = e.querySelector('.link_tit');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                            titleLink = e.querySelector('.title_link');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                        });
+                        return extractionLinks;
                     });
                     links = [...links, ...links1];
 
@@ -316,17 +338,39 @@ router.post('/keywd', async(req, res) => {
                         let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
-                        // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const tt = Array.from(totalTit).map(e => {
-                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
-                        });
-                        const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        // const tt = Array.from(totalTit).map(e => {
+                        //     const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+                        // const ta = Array.from(titleArea).map(e => {
+                        //     const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+
+                        // return [...tt, ...ta];
+
+                        // 1. 두 NodeList를 하나의 배열로 결합
+                        const allElements = [...totalTit, ...titleArea];
+
+                        // 2. 이 배열을 DOM 상에서의 순서대로 정렬
+                        const sortElements = [...allElements].sort((a, b) => {
+                            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
                         });
 
-                        return [...tt, ...ta];
+                        // 3. 링크 추출
+                        const extractionLinks = Array.from(sortElements).map(e => {
+                            let titleLink = '';
+                            titleLink = e.querySelector('.link_tit');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                            titleLink = e.querySelector('.title_link');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                        });
+                        return extractionLinks;
                     });
                     links = [...links, ...links2];
 
@@ -453,17 +497,39 @@ router.post('/keywd/space', async(req, res) => {
                         let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
-                        // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const tt = Array.from(totalTit).map(e => {
-                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
-                        });
-                        const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        // const tt = Array.from(totalTit).map(e => {
+                        //     const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+                        // const ta = Array.from(titleArea).map(e => {
+                        //     const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+
+                        // return [...tt, ...ta];
+
+                        // 1. 두 NodeList를 하나의 배열로 결합
+                        const allElements = [...totalTit, ...titleArea];
+
+                        // 2. 이 배열을 DOM 상에서의 순서대로 정렬
+                        const sortElements = [...allElements].sort((a, b) => {
+                            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
                         });
 
-                        return [...tt, ...ta];
+                        // 3. 링크 추출
+                        const extractionLinks = Array.from(sortElements).map(e => {
+                            let titleLink = '';
+                            titleLink = e.querySelector('.link_tit');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                            titleLink = e.querySelector('.title_link');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                        });
+                        return extractionLinks;
                     });
                     links = [...links, ...links1];
 
@@ -596,17 +662,39 @@ router.post('/keywd/paste', async(req, res) => {
                         let totalTit = document.querySelectorAll('.total_tit');
                         let titleArea = document.querySelectorAll('.title_area');
 
-                        // .total_source 요소를 배열로 변환하여 map 함수 적용
-                        const tt = Array.from(totalTit).map(e => {
-                            const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
-                        });
-                        const ta = Array.from(titleArea).map(e => {
-                            const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
-                            return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // // .total_source 요소를 배열로 변환하여 map 함수 적용
+                        // const tt = Array.from(totalTit).map(e => {
+                        //     const titleLink = e.querySelector('.link_tit'); // 해당 .total_tit 첫 번째 .link_tit 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .link_tit 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+                        // const ta = Array.from(titleArea).map(e => {
+                        //     const titleLink = e.querySelector('.title_link'); // 해당 .title_area 첫 번째 .title_link 요소를 선택
+                        //     return titleLink ? titleLink.getAttribute('href') : ''; // .title_link 요소가 존재하면 href 속성 값을 반환하고, 없으면 공백 반환
+                        // });
+
+                        // return [...tt, ...ta];
+
+                        // 1. 두 NodeList를 하나의 배열로 결합
+                        const allElements = [...totalTit, ...titleArea];
+
+                        // 2. 이 배열을 DOM 상에서의 순서대로 정렬
+                        const sortElements = [...allElements].sort((a, b) => {
+                            return a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
                         });
 
-                        return [...tt, ...ta];
+                        // 3. 링크 추출
+                        const extractionLinks = Array.from(sortElements).map(e => {
+                            let titleLink = '';
+                            titleLink = e.querySelector('.link_tit');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                            titleLink = e.querySelector('.title_link');
+                            if (titleLink) {
+                                return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                        });
+                        return extractionLinks;
                     });
                     links = [...links, ...links2];
 
