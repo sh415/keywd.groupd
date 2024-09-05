@@ -693,6 +693,9 @@ router.post('/keywd/paste', async(req, res) => {
                             if (titleLink) {
                                 return titleLink ? titleLink.getAttribute('href') : '';
                             }
+                            if (!titleLink) {
+                                return '';
+                            }
                         });
                         return extractionLinks;
                     });
