@@ -305,6 +305,9 @@ router.post('/keywd', async(req, res) => {
                             if (titleLink) {
                                 return titleLink ? titleLink.getAttribute('href') : '';
                             }
+                            if (!titleLink) {
+                                return '';
+                            }
                         });
                         return extractionLinks;
                     });
@@ -368,6 +371,9 @@ router.post('/keywd', async(req, res) => {
                             titleLink = e.querySelector('.title_link');
                             if (titleLink) {
                                 return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                            if (!titleLink) {
+                                return '';
                             }
                         });
                         return extractionLinks;
@@ -527,6 +533,9 @@ router.post('/keywd/space', async(req, res) => {
                             titleLink = e.querySelector('.title_link');
                             if (titleLink) {
                                 return titleLink ? titleLink.getAttribute('href') : '';
+                            }
+                            if (!titleLink) {
+                                return '';
                             }
                         });
                         return extractionLinks;
