@@ -267,7 +267,7 @@ router.post('/keywd', async(req, res) => {
                     // await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
-                    const links1 = await page.evaluate(() => {
+                    let links1 = await page.evaluate(() => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         //return Array.from(elements).map(el => el.href);
 
@@ -311,6 +311,9 @@ router.post('/keywd', async(req, res) => {
                         });
                         return extractionLinks;
                     });
+
+                    links1 = links1.filter(item => item !== '');
+                    links1 = links1.slice(0, 7);
                     links = [...links, ...links1];
 
                 } catch (error) {
@@ -334,7 +337,7 @@ router.post('/keywd', async(req, res) => {
                     // await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
-                    const links2 = await page.evaluate(() => {
+                    let links2 = await page.evaluate(() => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         // return Array.from(elements).map(el => el.href);
 
@@ -378,6 +381,9 @@ router.post('/keywd', async(req, res) => {
                         });
                         return extractionLinks;
                     });
+
+                    links2 = links2.filter(item => item !== '');
+                    links2 = links2.slice(0, 7);
                     links = [...links, ...links2];
 
                 } catch (error) {
@@ -496,7 +502,7 @@ router.post('/keywd/space', async(req, res) => {
                     // await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
-                    const links1 = await page.evaluate(() => {
+                    let links1 = await page.evaluate(() => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         // return Array.from(elements).map(el => el.href);
 
@@ -540,6 +546,9 @@ router.post('/keywd/space', async(req, res) => {
                         });
                         return extractionLinks;
                     });
+                    
+                    links1 = links1.filter(item => item !== '');
+                    links1 = links1.slice(0, 7);
                     links = [...links, ...links1];
 
                 } catch (error) {
@@ -559,10 +568,6 @@ router.post('/keywd/space', async(req, res) => {
                 try {
                     if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                     await browser.close();
-
-                    console.log('================', links)
-
-                    links = links.slice(0, 7);
                     return { links: links, cell: chunk }; // error, 빈 배열 반환
 
                 } catch (error) {
@@ -667,7 +672,7 @@ router.post('/keywd/paste', async(req, res) => {
                     await waitForTimeout(3000);
 
                     // 페이지에 대한 작업을 수행하세요.
-                    const links2 = await page.evaluate(() => {
+                    let links2 = await page.evaluate(() => {
                         // const elements = document.querySelector('.lst_view').querySelectorAll('.title_link');
                         // return Array.from(elements).map(el => el.href);
 
@@ -711,6 +716,9 @@ router.post('/keywd/paste', async(req, res) => {
                         });
                         return extractionLinks;
                     });
+
+                    links2 = links2.filter(item => item !== '');
+                    links2 = links2.slice(0, 7);
                     links = [...links, ...links2];
 
                 } catch (error) {
@@ -730,7 +738,6 @@ router.post('/keywd/paste', async(req, res) => {
                 try {
                     if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                     await browser.close();
-                    links = links.slice(0, 7);
                     return { links: links, cell: chunk }; // error, 빈 배열 반환
 
                 } catch (error) {
