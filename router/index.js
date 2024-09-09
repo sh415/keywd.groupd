@@ -312,7 +312,7 @@ router.post('/keywd', async(req, res) => {
                         return extractionLinks;
                     });
 
-                    links1 = links1.filter(item => item !== '');
+                    // links1 = links1.filter(item => item !== '');
                     links1 = links1.slice(0, 7);
                     links = [...links, ...links1];
 
@@ -382,7 +382,7 @@ router.post('/keywd', async(req, res) => {
                         return extractionLinks;
                     });
 
-                    links2 = links2.filter(item => item !== '');
+                    // links2 = links2.filter(item => item !== '');
                     links2 = links2.slice(0, 7);
                     links = [...links, ...links2];
 
@@ -546,7 +546,7 @@ router.post('/keywd/space', async(req, res) => {
                         return extractionLinks;
                     });
                     
-                    links1 = links1.filter(item => item !== '');
+                    // links1 = links1.filter(item => item !== '');
                     links1 = links1.slice(0, 7);
                     links = [...links, ...links1];
 
@@ -716,7 +716,7 @@ router.post('/keywd/paste', async(req, res) => {
                         return extractionLinks;
                     });
 
-                    links2 = links2.filter(item => item !== '');
+                    // links2 = links2.filter(item => item !== '');
                     links2 = links2.slice(0, 7);
                     links = [...links, ...links2];
 
