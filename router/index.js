@@ -397,7 +397,6 @@ router.post('/keywd', async(req, res) => {
                 try {
                     if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                     await browser.close();
-                    links = links.slice(0, 7);
                     return { links: links, cell: chunk };
 
                 } catch (error) {
