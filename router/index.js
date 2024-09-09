@@ -559,6 +559,9 @@ router.post('/keywd/space', async(req, res) => {
                 try {
                     if (page !== null) await page.close(); // finally 절에서 페이지를 닫음
                     await browser.close();
+
+                    console.log('================', links)
+
                     links = links.slice(0, 7);
                     return { links: links, cell: chunk }; // error, 빈 배열 반환
 
