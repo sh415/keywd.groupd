@@ -242,8 +242,8 @@ router.post('/keywd', async(req, res) => {
                     const response = await axios.post(`http://220.78.244.99:3000/content/keywd/upload`, {
                         image: screenshotBuffer,
                         cell: chunk,
-                        type: 'space',
-                        work: 'update',
+                        type: 'paste',
+                        work: 'add',
                     }, {
                         headers: {
                         'Content-Type': 'application/json'
@@ -608,7 +608,7 @@ router.post('/keywd/paste', async(req, res) => {
                     const response = await axios.post(`http://220.78.244.99:3000/content/keywd/upload`, {
                         image: screenshotBuffer,
                         cell: chunk,
-                        type: 'space',
+                        type: 'paste',
                         work: 'update',
                     }, {
                         headers: {
