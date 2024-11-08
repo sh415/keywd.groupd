@@ -5,17 +5,14 @@ const { exec } = require('child_process');
 const router = express.Router();
 
 /** modules */
-// const { default: axios } = require('axios');
-// const L = require("fxjs/Lazy");
-// const C = require("fxjs/Concurrency");
-// const go = require("fxjs").go;
+const { default: axios } = require('axios');
 const puppeteer = require("puppeteer");
 
 /** .env */ 
 require('dotenv').config();
-const MIN_PAGE_LOADTIME = parseInt(process.env.MIN_PAGE_LOADTIME, 10);
+const MIN_PAGE_LOADTIME = parseInt(process.env.MIN_PAGE_LOADTIME, 2);
 const MAX_PAGE_LOADTIME = parseInt(process.env.MAX_PAGE_LOADTIME, 10);
-const MIN_AWAIT_FOR_SAFETY = parseInt(process.env.MIN_AWAIT_FOR_SAFETY, 10);
+const MIN_AWAIT_FOR_SAFETY = parseInt(process.env.MIN_AWAIT_FOR_SAFETY, 5);
 const MAX_AWAIT_FOR_SAFETY = parseInt(process.env.MAX_AWAIT_FOR_SAFETY, 10);
 
 /**
@@ -46,120 +43,6 @@ router.get('/', (req, res) => {
  */
 router.post('/responses', async(req, res) => {
     try {
-        const results = {
-            message: true
-        }
-        res.status(200).send(results);
-
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-/**
- * @swagger
- * /vpn:
- *   post:
- *     description: vpn ip로 접속을 확인합니다.
- *     responses:
- *       200:
- *         description: 성공
- */
-router.post('/vpn', async(req, res) => {
-    try {
-        const browser = await puppeteer.launch({
-            headless: false,
-        });
-
-        try {
-            const page = await browser.newPage();
-            await page.setViewport({
-                width: 1920,
-                height: 1080
-            });
-            await page.goto(`https://ip.pe.kr/`, {
-                waitUntil: 'domcontentloaded',
-                timeout: 15000,
-            });
-
-            await waitForTimeout(5000);
-
-        } catch (error) {
-            console.log('/vpn -> error', error);
-
-        } finally {
-            await browser.close();
-        }
-
-        const results = {
-            message: true
-        }
-        res.status(200).send(results);
-
-    } catch (error) {
-        console.error(error);
-    }
-});
-
-/**
- * @swagger
- * /userAgent:
- *   post:
- *     description: userAgent값을 확인합니다.
- *     responses:
- *       200:
- *         description: 성공
- */
-router.post('/userAgent', async(req, res) => {
-    try {
-        const browser = await puppeteer.launch({
-            headless: false,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-web-security', // CORS 정책 우회
-                '--disable-features=IsolateOrigins,site-per-process' // 일부 탐지 메커니즘 우회
-            ]
-        });
-
-        try {
-            const page = await browser.newPage();
-            await page.setViewport({
-                width: 1920,
-                height: 1080
-            });
-
-            // userAgent 설정
-            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
-            // await page.setExtraHTTPHeaders({
-            //     'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
-            // });
-
-            await page.goto(`https://www.google.com/`, {
-                // waitUntil: 'domcontentloaded',
-                timeout: 15000,
-            });
-
-            // 페이지에 대한 작업을 수행하세요.
-            const userAgent = await page.evaluate(() => {
-                const ua = navigator.userAgent;
-                return ua;
-            });
-
-            await waitForTimeout(3000);
-
-            const results = {
-                message: userAgent
-            }
-            res.status(200).send(results);
-
-        } catch (error) {
-            console.log('/vpn -> error', error);
-
-        } finally {
-            await browser.close();
-        }
-
         const results = {
             message: true
         }
@@ -264,7 +147,23 @@ router.post('/keywd', async(req, res) => {
                     const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
                     console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
                     await waitForTimeout(wait);
-                    // await waitForTimeout(3000);
+                    
+                    // 스크린샷을 서버에 업로드
+                    const screenshotBuffer = await page.screenshot({ 
+                        encoding: 'base64',
+                        fullPage: true, // 전체 페이지 캡처
+                    });
+                    const response = await axios.post(`http://220.78.244.99:3000/content/keywd/upload`, {
+                        image: screenshotBuffer,
+                        cell: chunk,
+                        type: 'space',
+                        work: 'update',
+                    }, {
+                        headers: {
+                        'Content-Type': 'application/json'
+                        }
+                    });
+                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links1 = await page.evaluate(() => {
@@ -334,7 +233,23 @@ router.post('/keywd', async(req, res) => {
                     const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
                     console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
                     await waitForTimeout(wait);
-                    // await waitForTimeout(3000);
+                    
+                    // 스크린샷을 서버에 업로드
+                    const screenshotBuffer = await page.screenshot({ 
+                        encoding: 'base64',
+                        fullPage: true, // 전체 페이지 캡처
+                    });
+                    const response = await axios.post(`http://220.78.244.99:3000/content/keywd/upload`, {
+                        image: screenshotBuffer,
+                        cell: chunk,
+                        type: 'space',
+                        work: 'update',
+                    }, {
+                        headers: {
+                        'Content-Type': 'application/json'
+                        }
+                    });
+                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links2 = await page.evaluate(() => {
@@ -498,7 +413,23 @@ router.post('/keywd/space', async(req, res) => {
                     const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
                     console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
                     await waitForTimeout(wait);
-                    // await waitForTimeout(3000);
+
+                    // 스크린샷을 서버에 업로드
+                    const screenshotBuffer = await page.screenshot({ 
+                        encoding: 'base64',
+                        fullPage: true, // 전체 페이지 캡처
+                    });
+                    const response = await axios.post(`http://220.78.244.99:3000/content/keywd/upload`, {
+                        image: screenshotBuffer,
+                        cell: chunk,
+                        type: 'space',
+                        work: 'update',
+                    }, {
+                        headers: {
+                        'Content-Type': 'application/json'
+                        }
+                    });
+                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links1 = await page.evaluate(() => {
@@ -665,10 +596,26 @@ router.post('/keywd/paste', async(req, res) => {
                         waitUntil: 'domcontentloaded',
                         timeout: 15000,
                     });
-                    // const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
-                    // console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
-                    // await waitForTimeout(wait);
-                    await waitForTimeout(3000);
+                    const wait = waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME);
+                    console.log('openAndProcessPage() -> waitForSafety(MIN_PAGE_LOADTIME, MAX_PAGE_LOADTIME) -> wait', wait);
+                    await waitForTimeout(wait);
+
+                    // 스크린샷을 서버에 업로드
+                    const screenshotBuffer = await page.screenshot({ 
+                        encoding: 'base64',
+                        fullPage: true, // 전체 페이지 캡처
+                    });
+                    const response = await axios.post(`http://220.78.244.99:3000/content/keywd/upload`, {
+                        image: screenshotBuffer,
+                        cell: chunk,
+                        type: 'space',
+                        work: 'update',
+                    }, {
+                        headers: {
+                        'Content-Type': 'application/json'
+                        }
+                    });
+                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links2 = await page.evaluate(() => {
