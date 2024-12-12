@@ -214,7 +214,7 @@ router.post('/keywd', async(req, res) => {
                     });
 
                     // links1 = links1.filter(item => item !== '');
-                    if (!keywdVisible) {
+                    if (keywdVisible === null) {
                         // 기본값: 7위까지
                         links1 = links1.slice(0, 7); 
 
