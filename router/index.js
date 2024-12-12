@@ -98,7 +98,6 @@ router.post('/keywd', async(req, res) => {
         const chunk = req.body.chunk;
         const contents = req.body.contents;
         const keywdVisible = contents.keywdVisible;
-        console.log(contents, keywdVisible);
         // const BATCH = 5;
 
         async function openAndProcessPage(chunk) {
@@ -166,7 +165,6 @@ router.post('/keywd', async(req, res) => {
                         'Content-Type': 'application/json'
                         }
                     });
-                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links1 = await page.evaluate(() => {
@@ -263,7 +261,6 @@ router.post('/keywd', async(req, res) => {
                         'Content-Type': 'application/json'
                         }
                     });
-                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links2 = await page.evaluate(() => {
@@ -312,7 +309,7 @@ router.post('/keywd', async(req, res) => {
                     });
 
                     // links2 = links2.filter(item => item !== '');
-                    if (!keywdVisible) {
+                    if (keywdVisible === null) {
                         // 기본값: 7위까지
                         links2 = links2.slice(0, 7); 
 
@@ -387,6 +384,8 @@ router.post('/keywd', async(req, res) => {
 router.post('/keywd/space', async(req, res) => {
     try {
         const chunk = req.body.chunk;
+        const contents = req.body.contents;
+        const keywdVisible = contents.keywdVisible;
         // const BATCH = 5;
 
         async function openAndProcessPage(chunk) {
@@ -454,7 +453,6 @@ router.post('/keywd/space', async(req, res) => {
                         'Content-Type': 'application/json'
                         }
                     });
-                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links1 = await page.evaluate(() => {
@@ -503,7 +501,7 @@ router.post('/keywd/space', async(req, res) => {
                     });
                     
                     // links1 = links1.filter(item => item !== '');
-                    if (!keywdVisible) {
+                    if (keywdVisible === null) {
                         // 기본값: 7위까지
                         links1 = links1.slice(0, 7); 
 
@@ -583,6 +581,8 @@ router.post('/keywd/space', async(req, res) => {
 router.post('/keywd/paste', async(req, res) => {
     try {
         const chunk = req.body.chunk;
+        const contents = req.body.contents;
+        const keywdVisible = contents.keywdVisible;
         // const BATCH = 5;
 
         async function openAndProcessPage(chunk) {
@@ -651,7 +651,6 @@ router.post('/keywd/paste', async(req, res) => {
                         'Content-Type': 'application/json'
                         }
                     });
-                    console.log(response);
 
                     // 페이지에 대한 작업을 수행하세요.
                     let links2 = await page.evaluate(() => {
@@ -700,7 +699,7 @@ router.post('/keywd/paste', async(req, res) => {
                     });
 
                     // links2 = links2.filter(item => item !== '');
-                    if (!keywdVisible) {
+                    if (keywdVisible === null) {
                         // 기본값: 7위까지
                         links2 = links2.slice(0, 7); 
 
