@@ -96,6 +96,8 @@ router.post('/restart', async(req, res) => {
 router.post('/keywd', async(req, res) => {
     try {
         const chunk = req.body.chunk;
+        const contents = req.body.contents;
+        const keywdVisible = contents.keywdVisible;
         // const BATCH = 5;
 
         async function openAndProcessPage(chunk) {
@@ -212,7 +214,18 @@ router.post('/keywd', async(req, res) => {
                     });
 
                     // links1 = links1.filter(item => item !== '');
-                    links1 = links1.slice(0, 7);
+                    if (!keywdVisible) {
+                        // 기본값: 7위까지
+                        links1 = links1.slice(0, 7); 
+
+                    } else if (keywdVisible === 0) {
+                        // 제한없음
+
+                    } else {
+                        // 설정한 값
+                        links1 = links1.slice(0, keywdVisible);
+                    }
+
                     links = [...links, ...links1];
 
                 } catch (error) {
@@ -298,7 +311,18 @@ router.post('/keywd', async(req, res) => {
                     });
 
                     // links2 = links2.filter(item => item !== '');
-                    links2 = links2.slice(0, 7);
+                    if (!keywdVisible) {
+                        // 기본값: 7위까지
+                        links2 = links2.slice(0, 7); 
+
+                    } else if (keywdVisible === 0) {
+                        // 제한없음
+
+                    } else {
+                        // 설정한 값
+                        links2 = links2.slice(0, keywdVisible);
+                    }
+
                     links = [...links, ...links2];
 
                 } catch (error) {
@@ -478,7 +502,18 @@ router.post('/keywd/space', async(req, res) => {
                     });
                     
                     // links1 = links1.filter(item => item !== '');
-                    links1 = links1.slice(0, 7);
+                    if (!keywdVisible) {
+                        // 기본값: 7위까지
+                        links1 = links1.slice(0, 7); 
+
+                    } else if (keywdVisible === 0) {
+                        // 제한없음
+
+                    } else {
+                        // 설정한 값
+                        links1 = links1.slice(0, keywdVisible);
+                    }
+
                     links = [...links, ...links1];
 
                 } catch (error) {
@@ -664,7 +699,17 @@ router.post('/keywd/paste', async(req, res) => {
                     });
 
                     // links2 = links2.filter(item => item !== '');
-                    links2 = links2.slice(0, 7);
+                    if (!keywdVisible) {
+                        // 기본값: 7위까지
+                        links2 = links2.slice(0, 7); 
+
+                    } else if (keywdVisible === 0) {
+                        // 제한없음
+
+                    } else {
+                        // 설정한 값
+                        links2 = links2.slice(0, keywdVisible);
+                    }
                     links = [...links, ...links2];
 
                 } catch (error) {
