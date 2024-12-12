@@ -98,6 +98,7 @@ router.post('/keywd', async(req, res) => {
         const chunk = req.body.chunk;
         const contents = req.body.contents;
         const keywdVisible = contents.keywdVisible;
+        console.log(contents, keywdVisible);
         // const BATCH = 5;
 
         async function openAndProcessPage(chunk) {
